@@ -2,8 +2,8 @@ class Pizza < Formula
   desc "The OpenSauced command-line tool"
   homepage "https://github.com/open-sauced/pizza-cli"
   version "v1.2.1"
-  url "https://github.com/open-sauced/pizza-cli/archive/v1.2.1.tar.gz"
-  sha256 "9c06c89b44b03adb3f8a9df19bf7bc2984dfe994b533fe5a492dedf6854c1775"
+  url "https://github.com/open-sauced/pizza-cli/archive/v1.3.0.tar.gz"
+  sha256 "5da48a17c0744fc037dfbe2d1ab1414ef6a3cfd9859237c2f2c8d3454c85dbf4"
   license "MIT"
 
   head "https://github.com/open-sauced/pizza.git", branch: "main"
@@ -17,7 +17,7 @@ class Pizza < Formula
 
   def install
     with_env(
-      "GO_LDFLAGS" => "-s -w -X 'github.com/open-sauced/pizza-cli/pkg/utils.writeOnlyPublicPosthogKey=phc_50r35wnPCQAV66xWzLDHPehBx3Sz0AaN5XG6kEOP9MJ' -X 'github.com/open-sauced/pizza-cli/pkg/utils.Version=v1.2.0' -X 'github.com/open-sauced/pizza-cli/pkg/utils.Sha=68fdede6057d147638e07c6fff0dcfb1fc7fbc5c' -X 'github.com/open-sauced/pizza-cli/pkg/utils.Datetime=2024-08-30-14:59:54'",
+      "GO_LDFLAGS" => "-s -w -X 'github.com/open-sauced/pizza-cli/pkg/utils.writeOnlyPublicPosthogKey=phc_50r35wnPCQAV66xWzLDHPehBx3Sz0AaN5XG6kEOP9MJ' -X 'github.com/open-sauced/pizza-cli/pkg/utils.Version=v1.3.0' -X 'github.com/open-sauced/pizza-cli/pkg/utils.Sha=b1f1b9555957daf6247bccaf08ce476a61d03206' -X 'github.com/open-sauced/pizza-cli/pkg/utils.Datetime=2024-09-06-09:40:02'",
     ) do
       system "go", "build", "-o=build/pizza"
     end
