@@ -5,6 +5,8 @@ class Pizza < Formula
   url "https://github.com/open-sauced/pizza-cli/archive/v1.4.0.tar.gz"
   sha256 "61fa3b3d840cbec4837d8ad438663a086fa6ce04352aaf89d50bd0449c7dac5d"
   license "MIT"
+  posthog_public_key "phc_50r35wnPCQAV66xWzLDHPehBx3Sz0AaN5XG6kEOP9MJ"
+  git_short_sha "ae7a2b45f0c90e2bb4bb7f1727f90fd69d1b1d77"
 
   head "https://github.com/open-sauced/pizza-cli.git", branch: "main"
 
@@ -16,11 +18,15 @@ class Pizza < Formula
   depends_on "go" => :build
 
   def install
-    with_env(
-      "GO_LDFLAGS" => "-s -w -X 'github.com/open-sauced/pizza-cli/pkg/utils.writeOnlyPublicPosthogKey=phc_50r35wnPCQAV66xWzLDHPehBx3Sz0AaN5XG6kEOP9MJ' -X 'github.com/open-sauced/pizza-cli/pkg/utils.Version=v1.4.0' -X 'github.com/open-sauced/pizza-cli/pkg/utils.Sha=ae7a2b45f0c90e2bb4bb7f1727f90fd69d1b1d77' -X 'github.com/open-sauced/pizza-cli/pkg/utils.Datetime=2024-09-11-16:54:14'",
-    ) do
-      system "go", "build", "-o=build/pizza"
-    end
+    ldflags = %W[
+      -s -w
+      -X 'github.com/open-sauced/pizza-cli/pkg/utils.Version=#{version}'
+      -X 'github.com/open-sauced/pizza-cli/pkg/utils.Sha=#{git_short_sha}'
+      -X 'github.com/open-sauced/pizza-cli/pkg/utils.Datetime=#{Time.now.utc.strftime("%Y-%m-%d-%H:%M:%S")}'
+      -X 'github.com/open-sauced/pizza-cli/pkg/utils.writeOnlyPublicPosthogKey=#{posthog_public_key}'
+    ].join(" ")
+
+    system "go", "build", "-ldflags", ldflags, "-o", "build/pizza"
     bin.install "build/pizza"
     generate_completions_from_executable(bin/"pizza", "completion")
   end
